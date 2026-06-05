@@ -1,0 +1,103 @@
+---
+const t = (Astro.locals as { t: (key: string) => string }).t;
+const pathname = Astro.url.pathname;
+const currentLocale = pathname === '/ja' || pathname.startsWith('/ja/') ? 'ja' : 'root';
+
+function rootPathname(): string {
+  if (pathname === '/ja') return '/';
+  if (pathname.startsWith('/ja/')) return pathname.slice('/ja'.length) || '/';
+  return pathname;
+}
+
+function localizedPathname(locale: 'root' | 'ja'): string {
+  const rootPath = rootPathname();
+  if (locale === 'root') return rootPath;
+  return rootPath === '/' ? '/ja/' : `/ja${rootPath}`;
+}
+
+const targetLocale = currentLocale === 'ja' ? 'root' : 'ja';
+const targetPath = localizedPathname(targetLocale);
+const targetLabel = targetLocale === 'ja' ? '日本語' : 'English';
+const label = `${t('languageSelect.accessibleLabel')}: ${targetLabel}`;
+---
+
+<starlight-lang-select>
+  <button
+    class="snap-language-toggle"
+    type="button"
+    aria-label={label}
+    title={label}
+    data-target-path={targetPath}
+  >
+    <svg
+      class="icon globe-icon"
+      aria-hidden="true"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <circle cx="12" cy="12" r="9"></circle>
+      <path d="M3 12h18"></path>
+      <path d="M12 3a14 14 0 0 1 0 18"></path>
+      <path d="M12 3a14 14 0 0 0 0 18"></path>
+    </svg>
+  </button>
+</starlight-lang-select>
+
+<script>
+  class StarlightLanguageSelect extends HTMLElement {
+    constructor() {
+      super();
+      this.querySelector('button')?.addEventListener('click', (event) => {
+        const button = event.currentTarget;
+        if (button instanceof HTMLButtonElement && button.dataset.targetPath) {
+          window.location.pathname = button.dataset.targetPath;
+        }
+      });
+    }
+  }
+  customElements.define('starlight-lang-select', StarlightLanguageSelect);
+</script>
+
+<style>
+  @layer starlight.components {
+    .snap-language-toggle {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      inline-size: 2.25rem;
+      block-size: 2.25rem;
+      border: 1px solid var(--sl-color-hairline);
+      border-radius: 0.45rem;
+      padding: 0;
+      background: color-mix(in srgb, var(--sl-color-bg-nav) 88%, var(--sl-color-white));
+      color: var(--sl-color-text-accent);
+      box-shadow: var(--sl-shadow-sm);
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .snap-language-toggle:hover,
+    .snap-language-toggle:focus-visible {
+      border-color: color-mix(in srgb, var(--sl-color-text) 24%, var(--sl-color-hairline));
+      color: var(--sl-color-text);
+    }
+
+    .snap-language-toggle:focus-visible {
+      outline: 2px solid var(--sl-color-blue);
+      outline-offset: 2px;
+    }
+
+    .icon {
+      pointer-events: none;
+      inline-size: 1rem;
+      block-size: 1rem;
+    }
+  }
+</style>

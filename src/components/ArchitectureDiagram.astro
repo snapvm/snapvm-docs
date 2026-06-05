@@ -1,0 +1,144 @@
+---
+interface Props {
+  locale?: "en" | "ja";
+}
+
+const { locale = "en" } = Astro.props;
+
+const copy = {
+  en: {
+    title: "SnapVM architecture flow",
+    browser: ["Browser", "console"],
+    api: ["SnapVM", "API"],
+    db: ["PostgreSQL", "+ RLS"],
+    gateway: ["HTTPS / terminal", "gateways"],
+    agent: ["Machine", "agent"],
+    runtime: ["Sprite or machine", "runtime"],
+  },
+  ja: {
+    title: "SnapVM アーキテクチャの流れ",
+    browser: ["ブラウザ", "コンソール"],
+    api: ["SnapVM", "API"],
+    db: ["PostgreSQL", "+ RLS"],
+    gateway: ["HTTPS / terminal", "gateways"],
+    agent: ["Machine", "agent"],
+    runtime: ["Sprite / machine", "runtime"],
+  },
+}[locale];
+
+const nodes = [
+  { key: "browser", x: 36, y: 142, lines: copy.browser },
+  { key: "api", x: 264, y: 78, lines: copy.api },
+  { key: "db", x: 516, y: 30, lines: copy.db },
+  { key: "runtime", x: 516, y: 154, lines: copy.runtime },
+  { key: "gateway", x: 264, y: 238, lines: copy.gateway },
+  { key: "agent", x: 516, y: 254, lines: copy.agent },
+];
+
+const edges = [
+  "M216 182 L264 118",
+  "M216 182 L264 278",
+  "M444 118 L516 70",
+  "M444 118 L516 194",
+  "M444 278 L516 294",
+  "M606 254 L606 224",
+];
+---
+
+<figure class="architecture-diagram">
+  <svg viewBox="0 0 740 360" role="img" aria-labelledby="architecture-title">
+    <title id="architecture-title">{copy.title}</title>
+    <defs>
+      <marker
+        id="arrow"
+        viewBox="0 0 10 10"
+        refX="9"
+        refY="5"
+        markerWidth="7"
+        markerHeight="7"
+        orient="auto-start-reverse"
+      >
+        <path d="M0 0 L10 5 L0 10 Z"></path>
+      </marker>
+    </defs>
+    <g class="edges">
+      {edges.map((edge) => <path d={edge} marker-end="url(#arrow)"></path>)}
+    </g>
+    <g class="nodes">
+      {
+        nodes.map((node) => (
+          <g class={`node node-${node.key}`}>
+            <rect x={node.x} y={node.y} width="180" height="80" rx="7"></rect>
+            <text x={node.x + 90} y={node.y + 35} text-anchor="middle">
+              {node.lines.map((line, index) => (
+                <tspan x={node.x + 90} dy={index === 0 ? 0 : 22}>
+                  {line}
+                </tspan>
+              ))}
+            </text>
+          </g>
+        ))
+      }
+    </g>
+  </svg>
+</figure>
+
+<style>
+  @layer starlight.components {
+    .architecture-diagram {
+      overflow-x: auto;
+      margin-block: 1.5rem;
+      border: 1px solid var(--sl-color-hairline);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      background:
+        linear-gradient(
+          color-mix(in srgb, var(--sl-color-bg) 95%, transparent),
+          color-mix(in srgb, var(--sl-color-bg) 95%, transparent)
+        ),
+        linear-gradient(var(--sl-color-hairline) 1px, transparent 1px),
+        linear-gradient(90deg, var(--sl-color-hairline) 1px, transparent 1px);
+      background-size:
+        auto,
+        4.5rem 4.5rem,
+        4.5rem 4.5rem;
+    }
+
+    svg {
+      display: block;
+      min-inline-size: 38rem;
+      inline-size: 100%;
+      block-size: auto;
+    }
+
+    .edges path {
+      fill: none;
+      stroke: color-mix(in srgb, var(--sl-color-text) 34%, var(--sl-color-bg));
+      stroke-width: 2;
+    }
+
+    marker path {
+      fill: color-mix(in srgb, var(--sl-color-text) 40%, var(--sl-color-bg));
+    }
+
+    .node rect {
+      fill: color-mix(in srgb, var(--sl-color-bg-nav) 92%, var(--sl-color-white));
+      stroke: color-mix(in srgb, var(--sl-color-text) 18%, var(--sl-color-hairline));
+      stroke-width: 1.5;
+      filter: drop-shadow(0 0.5rem 1rem rgb(0 0 0 / 8%));
+    }
+
+    .node text {
+      fill: var(--sl-color-text);
+      font-family: var(--sl-font);
+      font-size: 1rem;
+      font-weight: 650;
+    }
+
+    .node-api rect,
+    .node-runtime rect {
+      fill: color-mix(in srgb, var(--sl-color-bg-accent) 12%, var(--sl-color-bg-nav));
+      stroke: color-mix(in srgb, var(--sl-color-accent) 35%, var(--sl-color-hairline));
+    }
+  }
+</style>

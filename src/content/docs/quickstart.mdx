@@ -1,0 +1,66 @@
+---
+title: Quickstart
+description: Sign in, create a machine, and open a terminal from the SnapVM console.
+---
+
+This guide creates your first SnapVM workspace using the web console. No SnapVM CLI is required.
+
+## Prerequisites
+
+- A SnapVM account, invitation, or private beta access for your deployment
+- A modern browser with WebSocket support
+- An organization where you can create machines
+
+## Create your first machine
+
+1. Open the SnapVM console and sign in.
+2. Select an organization, or create one if the console prompts you.
+3. Go to **Machines** and choose **New**.
+4. Enter a machine name using lowercase letters, numbers, and hyphens.
+5. Choose the runtime or template your deployment exposes.
+6. Confirm the form and wait for the machine to become reachable.
+
+Machine creation provisions the runtime, records it in the SnapVM control plane, and starts the agent that the console uses for terminal access.
+
+## Open the terminal
+
+From the machine row or detail page, open **Terminal**. The console connects to the machine agent over a WebSocket PTY session.
+
+Try a few commands:
+
+```bash
+pwd
+uname -a
+mkdir -p ~/projects/hello
+cd ~/projects/hello
+printf 'hello from snapvm\n' > README.md
+```
+
+If you close the browser tab, return to the machine and open the terminal again. Recent session output can be replayed, and the filesystem changes remain on the machine.
+
+## Serve an HTTP app
+
+Most deployments route a machine HTTPS URL to an HTTP port inside the machine. If your deployment uses the default application port, you can start a server like this:
+
+```bash
+cd ~/projects/hello
+python3 -m http.server 8080
+```
+
+Then open the machine URL from the console. The URL usually follows this shape:
+
+```text
+https://<machine-name>.snapvm.app
+```
+
+Your operator may configure a different domain or default port.
+
+## Stop or hibernate
+
+When you are done, stop the machine from the console if your deployment exposes a stop action. Persistent files, packages, and repositories remain available for the next wake-up. Interactive shell processes are not a substitute for services; define a service for processes that should restart after hibernation.
+
+## Keep reading
+
+- [Working with SnapVM](/working-with-snapvm) for the end-to-end lifecycle
+- [Machines](/concepts/machines) for names, states, and URLs
+- [Terminal sessions](/concepts/terminal-sessions) for reconnect and multi-attach behavior

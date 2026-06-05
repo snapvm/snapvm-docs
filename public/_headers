@@ -1,0 +1,4 @@
+/*
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'wasm-unsafe-eval' 'sha256-VWo5Wp4aqSj6nSgMpeAp9cKieaoIfwFUAunAVugI5gA=' 'sha256-f/zAUE74ucc3JYp4r4QQvkJofoQdkOIhHYK+jeZ6eko=' 'sha256-jW8WckjjPKhafG7XrfbCsS+fWzLDBV3Lva82V15NF6Y=' 'sha256-wUJ7cMk7CckF41ZNTVXYlQDE6qlGKox6vS8L0ky5GwM=' 'sha256-SMfX0rBiD7byV84L9XfNrq+WJ331rnO3q37npPBy4Ts=' 'sha256-8JLcQFZQruxl3jMUwogr3y5/GMmZPAc+j2mNi7gywmw=' 'sha256-9YPKRPlDWSzDLTFd2ymgbR36hwtVSzb6TjfD00W5B3Y=' 'sha256-wX2yOADeV+NMngflD5uYi3vl50SHC4sfM1EmylVjlX4=' 'sha256-7eCV4jtsr4t4knb3c4FCRPeu7GGZeOUGE3XvWix0XOQ='; worker-src 'self' blob:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Content-Type-Options: nosniff

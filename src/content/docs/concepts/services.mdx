@@ -1,0 +1,76 @@
+---
+title: Services
+description: Define long-running processes that should restart when a machine wakes.
+---
+
+Services describe processes that SnapVM should manage for a machine. They are the right place for anything that should survive browser disconnects and restart after the machine wakes.
+
+## When to define a service
+
+Create a service when a process is part of the workspace, not just a one-off command.
+
+Common examples:
+
+- A web server on port `8080`
+- A local database or queue
+- A background worker
+- A file watcher
+- An AI agent process
+- A language server or project-specific daemon
+
+## Service shape
+
+A service definition usually includes:
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td>Stable identifier shown in the console</td>
+    </tr>
+    <tr>
+      <td>Command</td>
+      <td>Executable to run</td>
+    </tr>
+    <tr>
+      <td>Arguments</td>
+      <td>Parameters passed to the command</td>
+    </tr>
+    <tr>
+      <td>Working directory</td>
+      <td>Directory where the process starts</td>
+    </tr>
+    <tr>
+      <td>Environment</td>
+      <td>Variables needed by the process</td>
+    </tr>
+    <tr>
+      <td>HTTP port</td>
+      <td>Port the gateway should expose, when applicable</td>
+    </tr>
+    <tr>
+      <td>Dependencies</td>
+      <td>Other services that should start first</td>
+    </tr>
+  </tbody>
+</table>
+
+## Lifecycle
+
+Services can be created, updated, started, stopped, restarted, and deleted. Runtime state can include PID, uptime, exit status, and restart count depending on the deployment.
+
+When a machine hibernates, processes stop with the runtime. When the machine wakes, service definitions let SnapVM restart the expected processes in a predictable way.
+
+## Practical guidance
+
+- Keep commands explicit so the service can start without shell history or interactive prompts.
+- Prefer project-local scripts such as `npm run dev` or `bin/server` over long one-off commands.
+- Store secrets in the deployment's supported secret mechanism, not in documentation or committed service definitions.
+- Use health checks or logs to verify that the service started cleanly.
+- Keep ports stable so the gateway and teammates know where to reach the app.

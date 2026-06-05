@@ -1,0 +1,123 @@
+---
+import { Icon } from '@astrojs/starlight/components';
+
+const t = (Astro.locals as { t: (key: string) => string }).t;
+---
+
+<starlight-theme-select>
+  <button class="snap-theme-toggle" type="button" aria-label={t('themeSelect.accessibleLabel')} title={t('themeSelect.accessibleLabel')}>
+    <Icon name="laptop" class="icon label-icon" />
+  </button>
+</starlight-theme-select>
+
+{/* Inlined to avoid FOUC. Uses global scope from `ThemeProvider.astro` */}
+<script is:inline>
+  StarlightThemeProvider.updatePickers();
+</script>
+
+<script>
+  type Theme = 'auto' | 'dark' | 'light';
+  type ExplicitTheme = Exclude<Theme, 'auto'>;
+
+  declare global {
+    interface Window {
+      StarlightThemeProvider: {
+        updatePickers(theme?: Theme): void;
+      };
+    }
+  }
+
+  /** Key in `localStorage` to store color theme preference at. */
+  const storageKey = 'starlight-theme';
+
+  /** Get a typesafe theme string from any JS value (unknown values are coerced to `'auto'`). */
+  const parseTheme = (theme: unknown): Theme =>
+    theme === 'auto' || theme === 'dark' || theme === 'light' ? theme : 'auto';
+
+  /** Load the user's preference from `localStorage`. */
+  const loadTheme = (): Theme =>
+    parseTheme(typeof localStorage !== 'undefined' && localStorage.getItem(storageKey));
+
+  /** Store the user's preference in `localStorage`. */
+  function storeTheme(theme: ExplicitTheme): void {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(storageKey, theme);
+    }
+  }
+
+  /** Get the preferred system color scheme. */
+  const getPreferredColorScheme = (): ExplicitTheme =>
+    matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+
+  /** Get the current effective document theme. */
+  const getEffectiveTheme = (): ExplicitTheme =>
+    document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+
+  /** Update button UI and document theme. */
+  function applyTheme(theme: ExplicitTheme): void {
+    window.StarlightThemeProvider.updatePickers(theme);
+    document.documentElement.dataset.theme = theme;
+  }
+
+  /** Update button UI, document theme, and local storage state. */
+  function onThemeChange(theme: ExplicitTheme): void {
+    applyTheme(theme);
+    storeTheme(theme);
+  }
+
+  // React to changes in system color scheme.
+  matchMedia(`(prefers-color-scheme: light)`).addEventListener('change', () => {
+    if (loadTheme() === 'auto') applyTheme(getPreferredColorScheme());
+  });
+
+  class StarlightThemeSelect extends HTMLElement {
+    constructor() {
+      super();
+      const storedTheme = loadTheme();
+      const initialTheme: ExplicitTheme =
+        storedTheme === 'auto' ? getPreferredColorScheme() : storedTheme;
+      applyTheme(initialTheme);
+      this.querySelector('button')?.addEventListener('click', () => {
+        onThemeChange(getEffectiveTheme() === 'dark' ? 'light' : 'dark');
+      });
+    }
+  }
+  customElements.define('starlight-theme-select', StarlightThemeSelect);
+</script>
+
+<style>
+  @layer starlight.components {
+    .snap-theme-toggle {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      inline-size: 2.25rem;
+      block-size: 2.25rem;
+      border: 1px solid var(--sl-color-hairline);
+      border-radius: 0.45rem;
+      padding: 0;
+      background: color-mix(in srgb, var(--sl-color-bg-nav) 88%, var(--sl-color-white));
+      color: var(--sl-color-text-accent);
+      box-shadow: var(--sl-shadow-sm);
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .snap-theme-toggle:hover,
+    .snap-theme-toggle:focus-visible {
+      border-color: color-mix(in srgb, var(--sl-color-text) 24%, var(--sl-color-hairline));
+      color: var(--sl-color-text);
+    }
+
+    .snap-theme-toggle:focus-visible {
+      outline: 2px solid var(--sl-color-blue);
+      outline-offset: 2px;
+    }
+
+    .icon {
+      pointer-events: none;
+      font-size: 1rem;
+    }
+  }
+</style>
