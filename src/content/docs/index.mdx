@@ -3,6 +3,7 @@ title: SnapVM Overview
 description: SnapVM is a browser-accessible cloud development environment backed by persistent Sprites.
 ---
 
+import ArchitectureDiagram from "../../components/ArchitectureDiagram.astro";
 import { Card, CardGrid } from "@astrojs/starlight/components";
 
 SnapVM provides isolated development workspaces powered by [Sprites](https://docs.sprites.dev/): persistent cloud containers that keep their filesystem, packages, and configuration across hibernation. Each workspace gives you a full Linux environment with browser access to a terminal, editor, and HTTP services without asking every developer to run local infrastructure.
@@ -75,22 +76,7 @@ Services are persistent process definitions for web servers, databases, agents, 
 
 ## Architecture at a glance
 
-```mermaid
-graph TD
-  Browser["Browser console"]
-  API["SnapVM API"]
-  DB["PostgreSQL + RLS"]
-  Gateway["HTTPS / terminal gateways"]
-  Agent["Machine agent"]
-  Runtime["Sprite or machine runtime"]
-
-  Browser --> API
-  API --> DB
-  API --> Runtime
-  Browser --> Gateway
-  Gateway --> Agent
-  Agent --> Runtime
-```
+<ArchitectureDiagram locale="en" />
 
 The web console is the main user surface. The API server authorizes requests, enforces organization boundaries, and coordinates machine lifecycle. Gateways route browser traffic to terminals and applications running inside machines.
 
