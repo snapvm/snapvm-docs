@@ -94,19 +94,19 @@ const t = (Astro.locals as { t: (key: string) => string }).t;
       justify-content: center;
       inline-size: 2.25rem;
       block-size: 2.25rem;
-      border: 1px solid var(--sl-color-hairline);
+      border: 0;
       border-radius: 0.45rem;
       padding: 0;
-      background: color-mix(in srgb, var(--sl-color-bg-nav) 88%, var(--sl-color-white));
+      background: transparent;
       color: var(--sl-color-text-accent);
-      box-shadow: var(--sl-shadow-sm);
+      box-shadow: none;
       cursor: pointer;
       font: inherit;
     }
 
     .snap-theme-toggle:hover,
     .snap-theme-toggle:focus-visible {
-      border-color: color-mix(in srgb, var(--sl-color-text) 24%, var(--sl-color-hairline));
+      background: color-mix(in srgb, var(--sl-color-text) 8%, transparent);
       color: var(--sl-color-text);
     }
 

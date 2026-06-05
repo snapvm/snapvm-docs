@@ -100,8 +100,15 @@ body::before {
 }
 
 .site-title {
+  gap: 0.55rem;
+  font-size: 1.25rem;
   font-weight: 650;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
+}
+
+.site-title :where(img, svg) {
+  width: 1.55rem;
+  height: 1.55rem;
 }
 
 .header {
