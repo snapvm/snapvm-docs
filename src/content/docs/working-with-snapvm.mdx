@@ -1,0 +1,91 @@
+---
+title: Working with SnapVM
+description: How machines, services, terminal sessions, storage, and organizations fit together.
+---
+
+SnapVM is built around a small set of durable concepts: machines, terminal sessions, services, storage, and organizations. The web console is the primary way to operate them.
+
+## Typical workflow
+
+1. Choose an organization in the console.
+2. Create a machine for a project, demo, class, or agent host.
+3. Open a terminal and set up the workspace.
+4. Start short-lived exploratory commands in the terminal.
+5. Define services for long-running processes.
+6. Stop or leave the machine to hibernate when idle.
+7. Reopen the machine later and continue from the persisted filesystem.
+
+## Machines
+
+A machine is a named workspace backed by a runtime. It owns the state you care about: files, packages, repositories, service definitions, and gateway routing.
+
+Machine names also become part of the application URL. Keep names short and stable, for example `api-demo`, `agent-lab`, or `frontend-review`.
+
+## Sessions
+
+Terminal sessions are interactive shells exposed by the machine agent. They are useful for development, debugging, installing tools, and inspecting logs.
+
+Sessions can survive browser disconnects, but they are still interactive work surfaces. If a process must keep running across hibernation, make it a service instead of relying on an open terminal tab.
+
+## Services
+
+Services are durable process definitions. Use services for web servers, databases, queues, workers, language servers, or agent processes that should restart when a machine wakes.
+
+A service usually has:
+
+- A name
+- A command and arguments
+- A working directory
+- Optional environment variables
+- An optional HTTP port
+- Lifecycle state such as running, stopped, or failed
+
+## Storage and hibernation
+
+The filesystem persists across stop and hibernation. This includes source code, installed packages, databases stored on disk, configuration files, and generated artifacts.
+
+In-memory state does not persist. Processes started in an interactive shell stop when the runtime sleeps unless they are managed as services.
+
+## Organizations and access
+
+Machines belong to organizations. Authentication and row-level security keep organization data isolated so a user only sees machines for organizations where they have access.
+
+Common access tasks happen in the console:
+
+- Create or switch organizations
+- Invite members
+- Review machine ownership
+- Update member roles when the deployment supports role management
+
+## Choosing the right primitive
+
+<table>
+  <thead>
+    <tr>
+      <th>Need</th>
+      <th>Use</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>A durable workspace for a project</td>
+      <td>Machine</td>
+    </tr>
+    <tr>
+      <td>A browser shell for exploration</td>
+      <td>Terminal session</td>
+    </tr>
+    <tr>
+      <td>A long-running process</td>
+      <td>Service</td>
+    </tr>
+    <tr>
+      <td>Files and packages that survive idle time</td>
+      <td>Persistent filesystem</td>
+    </tr>
+    <tr>
+      <td>Team-level ownership and access</td>
+      <td>Organization</td>
+    </tr>
+  </tbody>
+</table>

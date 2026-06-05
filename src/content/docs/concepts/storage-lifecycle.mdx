@@ -1,0 +1,81 @@
+---
+title: Storage and lifecycle
+description: What persists across hibernation, what does not, and how to work safely.
+---
+
+SnapVM machines are useful because their filesystem remains durable while compute can stop or hibernate.
+
+## What persists
+
+The persistent filesystem keeps:
+
+- Source code and Git repositories
+- Installed packages and language runtimes
+- Generated files
+- Local configuration
+- Databases stored on disk
+- Service definitions
+
+This means a machine can feel like a long-lived development computer even when its compute runtime sleeps between sessions.
+
+## What does not persist
+
+The following should be treated as ephemeral:
+
+- Running processes that are not services
+- In-memory caches
+- Unsaved editor buffers
+- Temporary sockets
+- Runtime-local network connections
+
+If a process matters after wake-up, define it as a service. If data matters, write it to disk or a remote backing service.
+
+## Wake-up triggers
+
+A stopped or hibernating machine can wake when:
+
+- A user opens the terminal in the console
+- A browser requests the machine HTTPS URL
+- The API receives a start request
+- A deployment-specific scheduler or worker starts the machine
+
+Wake time depends on runtime type, region, image size, and service startup cost.
+
+## Safe operating model
+
+Use this pattern for low-friction development:
+
+1. Keep project files under a predictable workspace directory.
+2. Commit source code to Git before deleting machines.
+3. Use services for long-running processes.
+4. Stop or hibernate when the machine is idle.
+5. Treat deletion as final.
+
+## Troubleshooting lifecycle issues
+
+<table>
+  <thead>
+    <tr>
+      <th>Symptom</th>
+      <th>Check</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Files are present but server is down</td>
+      <td>The server was probably an interactive process; define a service</td>
+    </tr>
+    <tr>
+      <td>Machine URL wakes but returns an error</td>
+      <td>Confirm the service port and logs</td>
+    </tr>
+    <tr>
+      <td>Terminal cannot connect</td>
+      <td>Check machine state, agent health, and gateway logs</td>
+    </tr>
+    <tr>
+      <td>Wake-up feels slow</td>
+      <td>Inspect service startup cost and image/runtime size</td>
+    </tr>
+  </tbody>
+</table>

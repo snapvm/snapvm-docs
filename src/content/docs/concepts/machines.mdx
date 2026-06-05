@@ -1,0 +1,90 @@
+---
+title: Machines
+description: Machine names, states, runtime types, URLs, and practical naming guidance.
+---
+
+A machine is a SnapVM workspace. It combines a runtime, persistent storage, an agent, and gateway routing behind a single object in the web console.
+
+## Machine names
+
+Machine names are designed to be URL-safe. Use lowercase letters, numbers, and hyphens. Keep names under 30 characters when creating machines from the console.
+
+Good names are stable and project-oriented:
+
+- `frontend-lab`
+- `agent-host`
+- `api-review`
+- `workshop-01`
+
+Avoid names tied to a temporary task if the machine will be reused.
+
+## States
+
+<table>
+  <thead>
+    <tr>
+      <th>State</th>
+      <th>Meaning</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>creating</code>
+      </td>
+      <td>SnapVM is provisioning the runtime and preparing the agent</td>
+    </tr>
+    <tr>
+      <td>
+        <code>started</code>
+      </td>
+      <td>The machine is running and should accept terminal or HTTP traffic</td>
+    </tr>
+    <tr>
+      <td>
+        <code>stopped</code>
+      </td>
+      <td>The machine is hibernating or stopped while durable state remains</td>
+    </tr>
+    <tr>
+      <td>
+        <code>destroying</code>
+      </td>
+      <td>SnapVM is deleting runtime resources</td>
+    </tr>
+    <tr>
+      <td>
+        <code>destroyed</code>
+      </td>
+      <td>The machine has been permanently deleted</td>
+    </tr>
+  </tbody>
+</table>
+
+Deployments may expose additional provider-specific states such as `starting`, `stopping`, `suspended`, or `failed`. Treat transitional states as temporary and failed states as requiring operator or support review.
+
+## Runtime types
+
+SnapVM can represent different machine launch types depending on the deployment:
+
+- **Sprites** for lightweight persistent cloud containers
+- **Fly Machines** for Fly.io-backed environments
+- **External machines** when an operator registers an existing host
+
+The user-facing workflow stays similar: create or register the machine, wait until the agent is reachable, then open the terminal or application URL.
+
+## Gateway URLs
+
+Each machine can be exposed through an HTTPS URL. A common deployment pattern is:
+
+```text
+https://<machine-name>.snapvm.app
+```
+
+The gateway routes requests to the configured HTTP port inside the machine. Check your deployment settings if the domain, default port, or authentication behavior differs.
+
+## Deletion
+
+Deleting a machine is permanent. Before deleting, confirm that any files, repositories, generated data, or local databases stored on the machine have been moved elsewhere.
+
+Stopping or hibernating is the right action when you want to keep state but avoid active compute.

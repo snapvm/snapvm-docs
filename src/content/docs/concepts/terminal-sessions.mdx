@@ -1,0 +1,80 @@
+---
+title: Terminal sessions
+description: Browser terminal behavior, reconnects, multi-attach, and when to use services instead.
+---
+
+The SnapVM terminal is a browser UI connected to a PTY exposed by the agent running inside a machine.
+
+## How connection works
+
+1. The browser asks the SnapVM API for authorized access to a machine.
+2. The console opens a WebSocket connection through the terminal gateway.
+3. The gateway reaches the agent inside the machine.
+4. The agent starts or attaches to a PTY session.
+5. Terminal input and output stream between the browser and the session.
+
+The terminal UI can use renderers such as xterm.js or experimental alternatives when the product exposes a switch.
+
+## Reconnect behavior
+
+Browser disconnects should not immediately destroy a session. Reopen the terminal to attach again and continue work. Recent output can be replayed from a buffer so the context is not lost.
+
+This is different from hibernation. If the runtime sleeps, in-memory processes can stop. Use services for processes that need to come back automatically.
+
+## Multi-attach
+
+Multiple browser tabs can attach to the same session when enabled. Everyone attached to that session sees the same live output and sends input to the same shell.
+
+Use multi-attach for pairing, demos, and support. For independent work, create a separate session so shell history and process state do not collide.
+
+## Multiple sessions
+
+A single machine can have multiple sessions. Use separate sessions for distinct tasks:
+
+- One shell for development commands
+- One shell for logs
+- One shell for database inspection
+- One shell for temporary experiments
+
+The deployment may enforce a maximum session count.
+
+## Terminal vs. service
+
+<table>
+  <thead>
+    <tr>
+      <th>Workload</th>
+      <th>Best fit</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Installing tools</td>
+      <td>Terminal</td>
+    </tr>
+    <tr>
+      <td>Editing files</td>
+      <td>Terminal or Code Server</td>
+    </tr>
+    <tr>
+      <td>Inspecting logs</td>
+      <td>Terminal</td>
+    </tr>
+    <tr>
+      <td>Running a development server temporarily</td>
+      <td>Terminal</td>
+    </tr>
+    <tr>
+      <td>Keeping a server running after wake-up</td>
+      <td>Service</td>
+    </tr>
+    <tr>
+      <td>Starting an agent automatically</td>
+      <td>Service</td>
+    </tr>
+    <tr>
+      <td>Restarting on failure</td>
+      <td>Service</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,192 @@
+@import "@fontsource/geist-sans/400.css";
+@import "@fontsource/geist-sans/500.css";
+@import "@fontsource/geist-sans/600.css";
+@import "@fontsource/geist-sans/700.css";
+@import "@fontsource/geist-mono/400.css";
+@import "@fontsource/geist-mono/500.css";
+
+:root {
+  --sl-font: "Geist Sans", system-ui, sans-serif;
+  --sl-font-mono: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
+  --sl-color-white: #342f28;
+  --sl-color-gray-1: #4b463f;
+  --sl-color-gray-2: #5f5a52;
+  --sl-color-gray-3: #817b72;
+  --sl-color-gray-4: #d7d1c7;
+  --sl-color-gray-5: #e8e3da;
+  --sl-color-gray-6: #f1ede5;
+  --sl-color-black: #fbf8f0;
+  --sl-color-bg: #fbf8f0;
+  --sl-color-bg-nav: color-mix(in srgb, #fbf8f0 84%, transparent);
+  --sl-color-bg-sidebar: color-mix(in srgb, #fbf8f0 92%, transparent);
+  --sl-color-bg-inline-code: rgba(75, 70, 63, 0.07);
+  --sl-color-hairline-light: rgba(75, 70, 63, 0.075);
+  --sl-color-hairline: rgba(75, 70, 63, 0.1);
+  --sl-color-text: #342f28;
+  --sl-color-text-accent: #6f6a5e;
+  --sl-color-accent: #6f6a5e;
+  --sl-color-accent-high: #342f28;
+  --sl-color-accent-low: #e8e3da;
+  --sl-color-blue-low: #e7f4ee;
+  --sl-color-blue: #0d9373;
+  --sl-color-blue-high: #0b604e;
+  --sl-shadow-sm: 0 1px 2px rgba(20, 20, 20, 0.05);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --sl-color-white: #f1ede5;
+  --sl-color-gray-1: #e6dfd3;
+  --sl-color-gray-2: #c5bcae;
+  --sl-color-gray-3: #998f80;
+  --sl-color-gray-4: #5c554b;
+  --sl-color-gray-5: #302b25;
+  --sl-color-gray-6: #211d19;
+  --sl-color-black: #0f0f0f;
+  --sl-color-bg: #0f0f0f;
+  --sl-color-bg-nav: rgba(15, 15, 15, 0.84);
+  --sl-color-bg-sidebar: rgba(15, 15, 15, 0.9);
+  --sl-color-bg-inline-code: rgba(241, 237, 229, 0.08);
+  --sl-color-hairline-light: rgba(241, 237, 229, 0.08);
+  --sl-color-hairline: rgba(241, 237, 229, 0.12);
+  --sl-color-text: #f1ede5;
+  --sl-color-text-accent: #c5bcae;
+  --sl-color-accent: #8a8376;
+  --sl-color-accent-high: #f1ede5;
+  --sl-color-accent-low: #211d19;
+  --sl-color-blue-low: #0e2b25;
+  --sl-color-blue: #32c997;
+  --sl-color-blue-high: #c7f5df;
+  color-scheme: dark;
+}
+
+html {
+  min-height: 100%;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+body {
+  min-height: 100%;
+  letter-spacing: 0;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(
+      ellipse 80% 50% at 50% 20%,
+      transparent 0%,
+      var(--sl-color-bg) 76%
+    ),
+    linear-gradient(
+      to right,
+      var(--sl-color-hairline-light) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      var(--sl-color-hairline-light) 1px,
+      transparent 1px
+    );
+  background-size:
+    auto,
+    64px 64px,
+    64px 64px;
+}
+
+.site-title {
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.header {
+  border-bottom-color: var(--sl-color-hairline);
+  backdrop-filter: blur(10px);
+}
+
+.sidebar {
+  border-inline-end-color: var(--sl-color-hairline);
+}
+
+.right-sidebar {
+  border-inline-start-color: var(--sl-color-hairline);
+}
+
+.content-panel {
+  border-inline-color: var(--sl-color-hairline);
+}
+
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3 {
+  letter-spacing: 0;
+}
+
+.sl-markdown-content h1 {
+  font-weight: 700;
+}
+
+.sl-markdown-content h2 {
+  font-weight: 650;
+}
+
+.sl-markdown-content a:not(.sl-link-button):not(.card) {
+  color: var(--sl-color-blue-high);
+  text-decoration-color: color-mix(
+    in srgb,
+    var(--sl-color-blue) 45%,
+    transparent
+  );
+}
+
+.sl-markdown-content code {
+  border-radius: 0.35rem;
+}
+
+.sl-markdown-content pre,
+.sl-markdown-content table,
+.card {
+  border-radius: 0.5rem;
+  border-color: var(--sl-color-hairline);
+  box-shadow: var(--sl-shadow-sm);
+}
+
+.sl-markdown-content table {
+  overflow: hidden;
+}
+
+.sl-markdown-content th {
+  font-weight: 600;
+}
+
+.card {
+  background: color-mix(in srgb, var(--sl-color-bg) 96%, var(--sl-color-white));
+}
+
+.sl-link-button.primary {
+  background: #342f28;
+  border-color: #342f28;
+  color: #fbf8f0;
+}
+
+:root[data-theme="dark"] .sl-link-button.primary {
+  background: #f1ede5;
+  border-color: #f1ede5;
+  color: #0f0f0f;
+}
+
+.sl-link-button.secondary {
+  border-color: var(--sl-color-hairline);
+  color: var(--sl-color-text);
+}
+
+astro-island,
+button,
+input {
+  font: inherit;
+}
