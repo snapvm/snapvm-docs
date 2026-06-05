@@ -3,7 +3,7 @@ title: SnapVM Overview
 description: SnapVM is a browser-accessible cloud development environment backed by persistent Sprites.
 ---
 
-import ArchitectureDiagram from "../../components/ArchitectureDiagram.astro";
+import ProductLayerDiagram from "../../components/ProductLayerDiagram.astro";
 import { Card, CardGrid } from "@astrojs/starlight/components";
 
 SnapVM provides isolated development workspaces powered by [Sprites](https://docs.sprites.dev/): persistent cloud containers that keep their filesystem, packages, and configuration across hibernation. Each workspace gives you a full Linux environment with browser access to a terminal, editor, and HTTP services without asking every developer to run local infrastructure.
@@ -14,71 +14,84 @@ SnapVM currently focuses on the web console and HTTP API. It does not ship a sta
 
 ## What SnapVM provides
 
+SnapVM is the product layer that makes Sprites easier to use as a backend. It packages persistent workspaces and hibernation behind a web console, authentication and authorization, clear plans, and a browser-first connection model.
+
+<ProductLayerDiagram locale="en" />
+
+- Create machines from the console and manage their state, region, runtime, and gateway URLs.
+- Manage organizations, users, and access in SnapVM so teams can control who can use each workspace.
+- Use Sprites persistence and idle hibernation through simple, predictable plans based on machine count.
+- Open terminals and HTTP services from the browser through the connect gateway.
+
+## What makes SnapVM different?
+
+SnapVM machines inherit the properties of [Sprites](https://docs.sprites.dev/#what-makes-sprites-different): instead of short-lived execution slots, they behave like stateful Linux environments you can wake when you need them.
+
 <table>
   <thead>
     <tr>
-      <th>Capability</th>
-      <th>Typical disposable sandboxes</th>
+      <th>Feature</th>
+      <th>Serverless Functions</th>
       <th>SnapVM</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Workspace state</td>
-      <td>Often reset between runs</td>
-      <td>Persistent filesystem, packages, repositories, and configuration</td>
+      <td>State</td>
+      <td>Ephemeral</td>
+      <td><strong>Persistent</strong> ✓</td>
     </tr>
     <tr>
-      <td>Terminal access</td>
-      <td>One-off attach sessions</td>
-      <td>Browser terminal over WebSocket PTY with reconnect support</td>
+      <td>Filesystem</td>
+      <td>Read-only or temporary</td>
+      <td><strong>Full ext4</strong> ✓ — persists between runs</td>
     </tr>
     <tr>
-      <td>Editor access</td>
-      <td>Bring your own editor</td>
-      <td>Code Server on the workspace when enabled by the deployment</td>
+      <td>Startup</td>
+      <td>Cold starts (100ms–seconds)</td>
+      <td><strong>Instant</strong> ✓ — wake from hibernation</td>
     </tr>
     <tr>
-      <td>HTTP access</td>
-      <td>Custom tunnels or VPNs</td>
-      <td>Per-machine HTTPS URL routed by the platform gateway</td>
+      <td>Billing</td>
+      <td>Per-invocation</td>
+      <td><strong>Machine-count plans</strong> ✓ — simple and predictable</td>
+    </tr>
+    <tr>
+      <td>Environment</td>
+      <td>Fixed container image</td>
+      <td><strong>Full Linux</strong> ✓ — install any tools</td>
     </tr>
     <tr>
       <td>Isolation</td>
-      <td>Shared or provider-specific</td>
-      <td>Dedicated machine runtime with organization-scoped data access</td>
-    </tr>
-    <tr>
-      <td>Idle behavior</td>
-      <td>Cold start from scratch</td>
-      <td>Hibernate while preserving durable state</td>
+      <td>Container-level</td>
+      <td><strong>Hardware-level</strong> ✓ — dedicated microVM</td>
     </tr>
   </tbody>
 </table>
 
-## Core concepts
+## Use cases
 
-### Machines
+Because SnapVM is backed by Sprites, it is a fit for workflows where code needs to run safely while keeping useful state:
 
-A machine is the SnapVM workspace you create and manage from the console. It has a name, lifecycle state, size, region, runtime type, and gateway URLs.
+- Execute AI-generated code in an isolated environment
+- Run user-submitted or otherwise untrusted code safely
+- Provide development environments that survive across sessions
+- Run HTTP services that can go idle and wake on demand
+- Execute CI/CD tasks with repositories, dependencies, and tools available
 
-### Sprites runtime
+## Sprites core concepts
 
-Machines can be backed by Sprites, which provide persistent cloud containers with fast hibernation and wake-up. SnapVM uses that runtime as the durable execution layer while the SnapVM control plane handles authentication, organization membership, machine records, and gateway routing.
+### Persistence
 
-### Terminal sessions
+A Sprite keeps its filesystem. Files written during execution, installed packages, and checked-out repositories remain available when the environment wakes later.
 
-Each machine runs an agent that exposes terminal sessions to the console. Browser disconnects do not need to end a terminal session immediately; reconnecting can attach to the same session and replay recent output.
+### Automatic idle behavior
 
-### Services
+An unused Sprite can become idle and hibernate. It wakes on the next connection or request, which lets you preserve state without keeping compute running all the time.
 
-Services are persistent process definitions for web servers, databases, agents, or workers that should restart when a machine wakes. They are better than leaving long-running processes in an interactive shell.
+### HTTP access
 
-## Architecture at a glance
-
-<ArchitectureDiagram locale="en" />
-
-The web console is the main user surface. The API server authorizes requests, enforces organization boundaries, and coordinates machine lifecycle. Gateways route browser traffic to terminals and applications running inside machines.
+HTTP services running inside a Sprite can be reached through URLs. In SnapVM, access to machines and services is handled through the platform connect gateway.
 
 ## Next steps
 

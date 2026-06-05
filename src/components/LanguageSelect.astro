@@ -15,19 +15,29 @@ function localizedPathname(locale: 'root' | 'ja'): string {
   return rootPath === '/' ? '/ja/' : `/ja${rootPath}`;
 }
 
-const targetLocale = currentLocale === 'ja' ? 'root' : 'ja';
-const targetPath = localizedPathname(targetLocale);
-const targetLabel = targetLocale === 'ja' ? '日本語' : 'English';
-const label = `${t('languageSelect.accessibleLabel')}: ${targetLabel}`;
+const currentLabel = currentLocale === 'ja' ? '日本語' : 'English';
+const label = `${t('languageSelect.accessibleLabel')}: ${currentLabel}`;
+const locales = [
+  {
+    id: 'root',
+    label: 'English',
+    lang: 'en',
+    path: localizedPathname('root'),
+  },
+  {
+    id: 'ja',
+    label: '日本語',
+    lang: 'ja',
+    path: localizedPathname('ja'),
+  },
+] as const;
 ---
 
-<starlight-lang-select>
-  <button
+<details class="snap-language-select">
+  <summary
     class="snap-language-toggle"
-    type="button"
-    aria-label={label}
+    aria-label={`${t('languageSelect.accessibleLabel')}: ${currentLabel}`}
     title={label}
-    data-target-path={targetPath}
   >
     <svg
       class="icon globe-icon"
@@ -46,46 +56,90 @@ const label = `${t('languageSelect.accessibleLabel')}: ${targetLabel}`;
       <path d="M12 3a14 14 0 0 1 0 18"></path>
       <path d="M12 3a14 14 0 0 0 0 18"></path>
     </svg>
-  </button>
-</starlight-lang-select>
-
-<script>
-  class StarlightLanguageSelect extends HTMLElement {
-    constructor() {
-      super();
-      this.querySelector('button')?.addEventListener('click', (event) => {
-        const button = event.currentTarget;
-        if (button instanceof HTMLButtonElement && button.dataset.targetPath) {
-          window.location.pathname = button.dataset.targetPath;
-        }
-      });
+    <span class="snap-language-current">{currentLabel}</span>
+    <svg
+      class="icon chevron-icon"
+      aria-hidden="true"
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="m6 9 6 6 6-6"></path>
+    </svg>
+  </summary>
+  <div class="snap-language-menu" role="menu">
+    {
+      locales.map((locale) => {
+        const isCurrent = locale.id === currentLocale;
+        return (
+          <a
+            class:list={['snap-language-option', { 'is-current': isCurrent }]}
+            href={locale.path}
+            lang={locale.lang}
+            role="menuitem"
+            aria-current={isCurrent ? 'page' : undefined}
+          >
+            <span>{locale.label}</span>
+            {isCurrent && (
+              <svg
+                class="icon check-icon"
+                aria-hidden="true"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+            )}
+          </a>
+        );
+      })
     }
-  }
-  customElements.define('starlight-lang-select', StarlightLanguageSelect);
-</script>
+  </div>
+</details>
 
 <style>
   @layer starlight.components {
+    .snap-language-select {
+      position: relative;
+      display: inline-flex;
+    }
+
     .snap-language-toggle {
       position: relative;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      inline-size: 2.25rem;
+      gap: 0.4rem;
+      min-width: 5.75rem;
+      min-inline-size: 5.75rem;
       block-size: 2.25rem;
-      border: 1px solid var(--sl-color-hairline);
+      border: 0;
       border-radius: 0.45rem;
-      padding: 0;
-      background: color-mix(in srgb, var(--sl-color-bg-nav) 88%, var(--sl-color-white));
+      padding-left: 0.6rem;
+      padding-right: 0.6rem;
+      padding-inline: 0.6rem;
+      background: transparent;
       color: var(--sl-color-text-accent);
-      box-shadow: var(--sl-shadow-sm);
+      box-shadow: none;
       cursor: pointer;
       font: inherit;
+      list-style: none;
     }
 
     .snap-language-toggle:hover,
     .snap-language-toggle:focus-visible {
-      border-color: color-mix(in srgb, var(--sl-color-text) 24%, var(--sl-color-hairline));
+      background: color-mix(in srgb, var(--sl-color-text) 8%, transparent);
       color: var(--sl-color-text);
     }
 
@@ -94,10 +148,82 @@ const label = `${t('languageSelect.accessibleLabel')}: ${targetLabel}`;
       outline-offset: 2px;
     }
 
+    .snap-language-toggle::-webkit-details-marker {
+      display: none;
+    }
+
     .icon {
       pointer-events: none;
+      flex: 0 0 auto;
+    }
+
+    .globe-icon {
       inline-size: 1rem;
       block-size: 1rem;
+    }
+
+    .snap-language-current {
+      color: var(--sl-color-text);
+      font-size: var(--sl-text-sm);
+      font-weight: 600;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .chevron-icon {
+      inline-size: 0.72rem;
+      block-size: 0.72rem;
+      transition: transform 120ms ease;
+    }
+
+    .snap-language-select[open] .chevron-icon {
+      transform: rotate(180deg);
+    }
+
+    .snap-language-menu {
+      position: absolute;
+      inset-block-start: calc(100% + 0.4rem);
+      inset-inline-end: 0;
+      z-index: calc(var(--sl-z-index-toc, 30) + 1);
+      min-inline-size: 9rem;
+      padding: 0.25rem;
+      border: 1px solid var(--sl-color-hairline);
+      border-radius: 0.45rem;
+      background: var(--sl-color-bg-nav);
+      box-shadow: var(--sl-shadow-md, 0 10px 30px rgba(20, 20, 20, 0.12));
+      backdrop-filter: blur(10px);
+    }
+
+    .snap-language-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      min-block-size: 2rem;
+      border-radius: 0.3rem;
+      padding-inline: 0.65rem 0.5rem;
+      color: var(--sl-color-text);
+      font-size: var(--sl-text-sm);
+      font-weight: 500;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .snap-language-option:hover,
+    .snap-language-option:focus-visible {
+      background: var(--sl-color-accent-low);
+      color: var(--sl-color-accent-high);
+      outline: none;
+    }
+
+    .snap-language-option.is-current {
+      color: var(--sl-color-blue-high);
+    }
+
+    .check-icon {
+      inline-size: 0.85rem;
+      block-size: 0.85rem;
     }
   }
 </style>
