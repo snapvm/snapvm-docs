@@ -1,0 +1,217 @@
+---
+title: CLI Commands
+description: Reference for common SnapVM CLI commands and options.
+---
+
+Use `snapvm --help` or `snapvm help <command>` in your terminal for the most current help output.
+
+## Global options
+
+These options can be used before a command:
+
+| Option | Environment variable | Purpose |
+| --- | --- | --- |
+| `--api-url <url>` | `SNAPVM_API_URL` | Use a custom SnapVM API URL when your administrator provides one. |
+| `--org <slug>`, `-o <slug>` | `SNAPVM_ORG` | Choose the organization for the command. |
+| `--machine <name-or-id>`, `-m <name-or-id>` | `SNAPVM_MACHINE` | Choose the machine for the command. |
+
+Example:
+
+```text
+snapvm --org my-team --machine frontend-lab console
+```
+
+## Authentication
+
+### `snapvm login`
+
+Sign in through the browser:
+
+```text
+snapvm login
+```
+
+Use `--web-url` only when your workspace administrator gives you a custom SnapVM web URL.
+
+### `snapvm logout`
+
+Remove stored CLI credentials:
+
+```text
+snapvm logout
+```
+
+## Updates
+
+### `snapvm update`
+
+Update the installed CLI:
+
+```text
+snapvm update
+```
+
+## Machines
+
+### `snapvm list`
+
+List machines:
+
+```text
+snapvm list
+```
+
+Options:
+
+- `--output table|json` changes the output format.
+- `--all` lists machines owned by all users when your role allows it.
+- `--user-id me|all|user_xxx` filters by owner.
+
+### `snapvm create`
+
+Create a machine:
+
+```text
+snapvm create --name frontend-lab
+```
+
+Options:
+
+- `--name <name>` sets the machine name.
+- `--launch-type sprites|external` chooses the launch type exposed by your deployment.
+- `--package <npm-package>` installs an npm package during initial setup. Repeat the flag to install more than one package.
+- `--package-manager bun|npm` chooses the package manager for `--package`.
+- `--output summary|json` changes the output format.
+
+Example:
+
+```text
+snapvm create --name automation-lab --package typescript --package-manager npm
+```
+
+### `snapvm destroy`
+
+Permanently delete a machine:
+
+```text
+snapvm destroy frontend-lab
+```
+
+Deletion is permanent. Move important files, repositories, generated data, and local databases elsewhere before destroying a machine.
+
+## Local context
+
+### `snapvm use`
+
+Activate a machine for the current directory:
+
+```text
+snapvm use frontend-lab
+```
+
+After this, commands such as `snapvm exec` and `snapvm console` use that machine when run from the same directory.
+
+Remove the local context:
+
+```text
+snapvm use --unset
+```
+
+## Command execution
+
+### `snapvm exec`
+
+Run a command inside the selected machine:
+
+```text
+snapvm exec pwd
+snapvm exec --dir ~/projects/app npm test
+```
+
+Alias:
+
+```text
+snapvm x pwd
+```
+
+Options:
+
+- `--dir <path>` sets the working directory.
+- `--env KEY=value` passes environment variables. Repeat the flag for multiple values.
+- `--stdin` forwards standard input.
+- `--tty` allocates an interactive terminal.
+
+### `snapvm console`
+
+Open an interactive shell in the selected machine:
+
+```text
+snapvm console
+```
+
+Alias:
+
+```text
+snapvm c
+```
+
+## Checkpoints
+
+### `snapvm checkpoint create`
+
+Create a checkpoint:
+
+```text
+snapvm checkpoint create --comment "before dependency upgrade"
+```
+
+### `snapvm checkpoint list`
+
+List checkpoints:
+
+```text
+snapvm checkpoint list
+snapvm checkpoint list --output json
+```
+
+### `snapvm checkpoint info`
+
+Show checkpoint details:
+
+```text
+snapvm checkpoint info <version-id>
+```
+
+### `snapvm checkpoint delete`
+
+Delete a checkpoint:
+
+```text
+snapvm checkpoint delete <version-id>
+```
+
+### `snapvm restore`
+
+Restore from a checkpoint:
+
+```text
+snapvm restore <version-id>
+```
+
+Restoring changes the machine back to the selected checkpoint. Save or move any work you need to keep before restoring.
+
+## Deprecated commands
+
+`snapvm machines` remains available for older workflows, but new usage should prefer the top-level commands:
+
+```text
+snapvm list
+snapvm create --name frontend-lab
+snapvm destroy frontend-lab
+```
+
+## Related documentation
+
+- [CLI installation](/cli/installation)
+- [CLI authentication](/cli/authentication)
+- [Machines](/concepts/machines)

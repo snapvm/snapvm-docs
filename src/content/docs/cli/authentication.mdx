@@ -1,0 +1,120 @@
+---
+title: CLI Authentication
+description: Sign in to SnapVM from the CLI, choose an organization, and log out.
+---
+
+Before the CLI can manage machines, sign in with your SnapVM account.
+
+## Sign in
+
+Run:
+
+```text
+snapvm login
+```
+
+The CLI opens a browser authentication flow. Complete sign-in in the browser, then return to your terminal.
+
+If the browser does not open automatically, use the URL printed by the CLI.
+
+## Verify access
+
+List the machines available to your account:
+
+```text
+snapvm list
+```
+
+By default, `snapvm list` shows machines owned by you in the selected organization. Organization owners and admins can use `--all` or `--user-id` when they need a broader view.
+
+```text
+snapvm list --all
+snapvm list --user-id me
+snapvm list --output json
+```
+
+## Select an organization
+
+Use `--org` when your account has access to more than one organization:
+
+```text
+snapvm --org my-team list
+```
+
+You can also set the default organization for your shell session:
+
+```text
+export SNAPVM_ORG="my-team"
+```
+
+## Select a machine
+
+Most machine commands accept a machine name or ID. You can also set a default machine for a command:
+
+```text
+snapvm --machine frontend-lab console
+```
+
+For a project directory, prefer local context:
+
+```text
+snapvm use frontend-lab
+snapvm exec pwd
+```
+
+## Custom SnapVM URLs
+
+The CLI defaults to the public SnapVM service. If your workspace administrator gives you a custom SnapVM URL, use the matching option:
+
+```text
+snapvm login --web-url https://snapvm.example.com
+snapvm --api-url https://snapvm.example.com/api list
+```
+
+For repeated use, set the environment variables your administrator provides:
+
+```text
+export SNAPVM_WEB_URL="https://snapvm.example.com"
+export SNAPVM_API_URL="https://snapvm.example.com/api"
+```
+
+## Log out
+
+Remove stored CLI credentials:
+
+```text
+snapvm logout
+```
+
+Run `snapvm login` again when you need to reconnect the CLI.
+
+## Troubleshooting
+
+### Browser does not open
+
+Copy the authentication URL printed in the terminal, open it in your browser, complete sign-in, and return to the CLI.
+
+### Not signed in
+
+Run:
+
+```text
+snapvm login
+```
+
+If the problem continues, log out and sign in again:
+
+```text
+snapvm logout
+snapvm login
+```
+
+### No machines appear
+
+Confirm that you selected the expected organization and that the console shows machines for your account. If access looks wrong, contact your workspace administrator.
+
+## Next steps
+
+- [CLI commands](/cli/commands)
+- [CLI installation](/cli/installation)
+- [Working with SnapVM](/working-with-snapvm)

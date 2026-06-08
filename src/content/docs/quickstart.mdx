@@ -3,12 +3,12 @@ title: Quickstart
 description: Sign in, create a machine, and open a terminal from the SnapVM console.
 ---
 
-This guide creates your first SnapVM workspace using the web console. No SnapVM CLI is required.
+This guide creates your first SnapVM workspace using the web console. If you prefer a local terminal workflow, install the [SnapVM CLI](/cli/installation) after you create or choose a machine.
 
 ## Prerequisites
 
 - A SnapVM account, invitation, or private beta access for your deployment
-- A modern browser with WebSocket support
+- A modern browser
 - An organization where you can create machines
 
 ## Create your first machine
@@ -20,15 +20,15 @@ This guide creates your first SnapVM workspace using the web console. No SnapVM 
 5. Choose the runtime or template your deployment exposes.
 6. Confirm the form and wait for the machine to become reachable.
 
-Machine creation provisions the runtime, records it in the SnapVM control plane, and starts the agent that the console uses for terminal access.
+Machine creation prepares the workspace and starts it so you can open a terminal or application URL from the console.
 
 ## Open the terminal
 
-From the machine row or detail page, open **Terminal**. The console connects to the machine agent over a WebSocket PTY session.
+From the machine row or detail page, open **Terminal**. The console opens an interactive shell in the machine.
 
 Try a few commands:
 
-```bash
+```text
 pwd
 uname -a
 mkdir -p ~/projects/hello
@@ -42,7 +42,7 @@ If you close the browser tab, return to the machine and open the terminal again.
 
 Most deployments route a machine HTTPS URL to an HTTP port inside the machine. If your deployment uses the default application port, you can start a server like this:
 
-```bash
+```text
 cd ~/projects/hello
 python3 -m http.server 8080
 ```
@@ -53,7 +53,20 @@ Then open the machine URL from the console. The URL usually follows this shape:
 https://<machine-name>.snapvm.app
 ```
 
-Your operator may configure a different domain or default port.
+Your workspace administrator may configure a different domain or default port.
+
+## Optional: use the CLI
+
+After installing the CLI, sign in and target the machine you created:
+
+```text
+snapvm login
+snapvm use <machine-name>
+snapvm exec pwd
+snapvm console
+```
+
+Use the console for browser-based workflows and the CLI when you want to run commands from your local terminal.
 
 ## Stop or hibernate
 
@@ -62,5 +75,6 @@ When you are done, stop the machine from the console if your deployment exposes 
 ## Keep reading
 
 - [Working with SnapVM](/working-with-snapvm) for the end-to-end lifecycle
+- [CLI Installation](/cli/installation) for local terminal setup
 - [Machines](/concepts/machines) for names, states, and URLs
 - [Terminal sessions](/concepts/terminal-sessions) for reconnect and multi-attach behavior

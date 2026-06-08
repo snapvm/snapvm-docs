@@ -1,31 +1,28 @@
 ---
 title: SnapVM Overview
-description: SnapVM is a browser-accessible cloud development environment backed by persistent Sprites.
+description: SnapVM is a browser-accessible cloud development environment with persistent machines.
 ---
 
-import ProductLayerDiagram from "../../components/ProductLayerDiagram.astro";
 import { Card, CardGrid } from "@astrojs/starlight/components";
 
-SnapVM provides isolated development workspaces powered by [Sprites](https://docs.sprites.dev/): persistent cloud containers that keep their filesystem, packages, and configuration across hibernation. Each workspace gives you a full Linux environment with browser access to a terminal, editor, and HTTP services without asking every developer to run local infrastructure.
+SnapVM provides isolated development workspaces that keep their filesystem, packages, and configuration across hibernation. Each machine gives you a Linux environment with browser access to a terminal, editor, and HTTP services without asking every developer to run local infrastructure.
 
 Organizations, users, and access are managed in the SnapVM web console. Machines can hibernate when idle and wake when you reconnect, so teams keep useful state without keeping every workspace hot all day.
 
-SnapVM currently focuses on the web console and HTTP API. It does not ship a standalone SnapVM CLI or MCP server, so this documentation does not describe those flows.
+SnapVM also includes a CLI for terminal-based workflows. Use the web console for browser-first machine management, and use the CLI when you want to sign in, create or list machines, open a shell, run commands, or manage checkpoints from your local terminal.
 
 ## What SnapVM provides
 
-SnapVM is the product layer that makes Sprites easier to use as a backend. It packages persistent workspaces and hibernation behind a web console, authentication and authorization, clear plans, and a browser-first connection model.
+SnapVM packages persistent workspaces and hibernation behind a web console, CLI, authentication and authorization, clear plans, and a browser-first connection model.
 
-<ProductLayerDiagram locale="en" />
-
-- Create machines from the console and manage their state, region, runtime, and gateway URLs.
+- Create machines from the console or CLI and manage their state, runtime, and application URLs.
 - Manage organizations, users, and access in SnapVM so teams can control who can use each workspace.
-- Use Sprites persistence and idle hibernation through simple, predictable plans based on machine count.
-- Open terminals and HTTP services from the browser through the connect gateway.
+- Keep files, packages, repositories, service definitions, and configuration across stop and hibernation.
+- Open terminals and HTTP services from the browser, or use the CLI to run commands from your local terminal.
 
 ## What makes SnapVM different?
 
-SnapVM machines inherit the properties of [Sprites](https://docs.sprites.dev/#what-makes-sprites-different): instead of short-lived execution slots, they behave like stateful Linux environments you can wake when you need them.
+SnapVM machines behave like stateful Linux environments you can wake when you need them. They are designed for work that should keep useful state without requiring every machine to run continuously.
 
 <table>
   <thead>
@@ -44,12 +41,12 @@ SnapVM machines inherit the properties of [Sprites](https://docs.sprites.dev/#wh
     <tr>
       <td>Filesystem</td>
       <td>Read-only or temporary</td>
-      <td><strong>Full ext4</strong> ✓ — persists between runs</td>
+      <td><strong>Writable and persistent</strong> ✓ - persists between sessions</td>
     </tr>
     <tr>
       <td>Startup</td>
       <td>Cold starts (100ms–seconds)</td>
-      <td><strong>Instant</strong> ✓ — wake from hibernation</td>
+      <td><strong>Wake from hibernation</strong> ✓ - continue from saved state</td>
     </tr>
     <tr>
       <td>Billing</td>
@@ -64,34 +61,34 @@ SnapVM machines inherit the properties of [Sprites](https://docs.sprites.dev/#wh
     <tr>
       <td>Isolation</td>
       <td>Container-level</td>
-      <td><strong>Hardware-level</strong> ✓ — dedicated microVM</td>
+      <td><strong>Isolated machine</strong> ✓ - separate workspace per machine</td>
     </tr>
   </tbody>
 </table>
 
 ## Use cases
 
-Because SnapVM is backed by Sprites, it is a fit for workflows where code needs to run safely while keeping useful state:
+SnapVM is a fit for workflows where code needs to run safely while keeping useful state:
 
 - Execute AI-generated code in an isolated environment
 - Run user-submitted or otherwise untrusted code safely
 - Provide development environments that survive across sessions
 - Run HTTP services that can go idle and wake on demand
-- Execute CI/CD tasks with repositories, dependencies, and tools available
+- Execute project tasks with repositories, dependencies, and tools available
 
-## Sprites core concepts
+## Core concepts
 
 ### Persistence
 
-A Sprite keeps its filesystem. Files written during execution, installed packages, and checked-out repositories remain available when the environment wakes later.
+A machine keeps its filesystem. Files written during execution, installed packages, and checked-out repositories remain available when the machine wakes later.
 
-### Automatic idle behavior
+### Idle behavior
 
-An unused Sprite can become idle and hibernate. It wakes on the next connection or request, which lets you preserve state without keeping compute running all the time.
+An unused machine can become idle and hibernate. It wakes on the next connection or request, which lets you preserve state without keeping compute running all the time.
 
 ### HTTP access
 
-HTTP services running inside a Sprite can be reached through URLs. In SnapVM, access to machines and services is handled through the platform connect gateway.
+HTTP services running inside a machine can be reached through application URLs when your deployment exposes them.
 
 ## Next steps
 
@@ -103,7 +100,10 @@ HTTP services running inside a Sprite can be reached through URLs. In SnapVM, ac
   <Card title="Working with SnapVM" icon="setting" href="/working-with-snapvm">
     Learn how machines, sessions, services, and hibernation fit together.
   </Card>
+  <Card title="CLI Installation" icon="setting" href="/cli/installation">
+    Install the CLI and verify the `snapvm` command from your terminal.
+  </Card>
   <Card title="Machines" icon="server" href="/concepts/machines">
-    Understand machine states, naming, runtime types, and gateway URLs.
+    Understand machine states, naming, runtime types, and application URLs.
   </Card>
 </CardGrid>

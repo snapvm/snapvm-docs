@@ -1,0 +1,106 @@
+---
+title: CLI Installation
+description: Install the SnapVM CLI, verify the snapvm command, and set up local machine context.
+---
+
+The SnapVM CLI (`snapvm`) lets you work with machines from your local terminal. Use it to sign in, list or create machines, run commands, open an interactive shell, and manage checkpoints without leaving your command line.
+
+## Quick install
+
+Install the latest CLI on macOS or Linux:
+
+```text
+curl -fsSL https://snapvm.dev/install.sh | sh
+```
+
+The install script:
+
+- Detects your operating system and CPU architecture
+- Downloads the matching SnapVM CLI release
+- Verifies the release checksum
+- Installs the binary as `snapvm`
+
+By default, the binary is installed to `/usr/local/bin/snapvm`. The script may ask for `sudo` if your user cannot write to that directory.
+
+## Install to a custom directory
+
+If you prefer a user-writable directory, set `SNAPVM_INSTALL_DIR` before running the script:
+
+```text
+export SNAPVM_INSTALL_DIR="$HOME/.local/bin"
+curl -fsSL https://snapvm.dev/install.sh | sh
+```
+
+Make sure the directory is on your `PATH`:
+
+```text
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+Add that `PATH` update to your shell profile if you want it to persist across terminal sessions.
+
+## Verify installation
+
+Confirm that your shell can find the CLI:
+
+```text
+which snapvm
+snapvm --version
+snapvm --help
+```
+
+You should see a `snapvm` path, a version, and the command list.
+
+## Update
+
+Update an existing CLI installation:
+
+```text
+snapvm update
+```
+
+## Local directory context
+
+Use `snapvm use` to make a machine the default for commands run from the current project directory:
+
+```text
+snapvm use frontend-lab
+```
+
+The CLI stores this local context in a `.snapvm` file. Add `.snapvm` to your `.gitignore` if machine selection should remain personal to each developer.
+
+Remove the local context when you no longer want the directory to target that machine:
+
+```text
+snapvm use --unset
+```
+
+## Troubleshooting
+
+### Command not found
+
+Check where the CLI was installed:
+
+```text
+which snapvm
+```
+
+If the command is not found, add the install directory to your `PATH`. For the default install location:
+
+```text
+export PATH="/usr/local/bin:$PATH"
+```
+
+### Permission denied during install
+
+The default install location may require administrator permission. Either allow the script to use `sudo`, or install into a user-writable directory with `SNAPVM_INSTALL_DIR`.
+
+### Unsupported platform
+
+The install script supports macOS and Linux on `amd64`/`x86_64` and `arm64`/`aarch64`. If your platform is not supported, use a supported machine or contact your workspace administrator.
+
+## Next steps
+
+- [CLI authentication](/cli/authentication)
+- [CLI commands](/cli/commands)
+- [Quickstart](/quickstart)

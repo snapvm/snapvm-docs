@@ -3,7 +3,7 @@ title: Machines
 description: Machine names, states, runtime types, URLs, and practical naming guidance.
 ---
 
-A machine is a SnapVM workspace. It combines a runtime, persistent storage, an agent, and gateway routing behind a single object in the web console.
+A machine is a SnapVM workspace. It combines a runtime, persistent storage, terminal access, and application URL settings behind a single object in the web console.
 
 ## Machine names
 
@@ -12,7 +12,7 @@ Machine names are designed to be URL-safe. Use lowercase letters, numbers, and h
 Good names are stable and project-oriented:
 
 - `frontend-lab`
-- `agent-host`
+- `automation-host`
 - `api-review`
 - `workshop-01`
 
@@ -32,7 +32,7 @@ Avoid names tied to a temporary task if the machine will be reused.
       <td>
         <code>creating</code>
       </td>
-      <td>SnapVM is provisioning the runtime and preparing the agent</td>
+      <td>SnapVM is preparing the workspace and terminal access</td>
     </tr>
     <tr>
       <td>
@@ -61,19 +61,18 @@ Avoid names tied to a temporary task if the machine will be reused.
   </tbody>
 </table>
 
-Deployments may expose additional provider-specific states such as `starting`, `stopping`, `suspended`, or `failed`. Treat transitional states as temporary and failed states as requiring operator or support review.
+Deployments may expose additional states such as `starting`, `stopping`, `suspended`, or `failed`. Treat transitional states as temporary and failed states as requiring support review.
 
 ## Runtime types
 
 SnapVM can represent different machine launch types depending on the deployment:
 
-- **Sprites** for lightweight persistent cloud containers
-- **Fly Machines** for Fly.io-backed environments
-- **External machines** when an operator registers an existing host
+- `sprites` for the default SnapVM-managed persistent machine
+- `external` when a workspace administrator registers an existing machine
 
-The user-facing workflow stays similar: create or register the machine, wait until the agent is reachable, then open the terminal or application URL.
+The user-facing workflow stays similar: create or register the machine, wait until it is reachable, then open the terminal or application URL.
 
-## Gateway URLs
+## Application URLs
 
 Each machine can be exposed through an HTTPS URL. A common deployment pattern is:
 
@@ -81,7 +80,7 @@ Each machine can be exposed through an HTTPS URL. A common deployment pattern is
 https://<machine-name>.snapvm.app
 ```
 
-The gateway routes requests to the configured HTTP port inside the machine. Check your deployment settings if the domain, default port, or authentication behavior differs.
+SnapVM sends requests for the application URL to the configured HTTP port inside the machine. Check your deployment settings if the domain, default port, or authentication behavior differs.
 
 ## Deletion
 

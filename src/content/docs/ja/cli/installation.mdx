@@ -1,0 +1,106 @@
+---
+title: CLI のインストール
+description: SnapVM CLI をインストールし、snapvm コマンドを確認して、ローカルのマシンコンテキストを設定します。
+---
+
+SnapVM CLI (`snapvm`) を使うと、ローカルターミナルからマシンを操作できます。サインイン、マシンの一覧表示と作成、コマンド実行、対話シェル、チェックポイント操作をコマンドラインから行えます。
+
+## クイックインストール
+
+macOS または Linux で最新の CLI をインストールします。
+
+```text
+curl -fsSL https://snapvm.dev/install.sh | sh
+```
+
+インストールスクリプトは次を行います。
+
+- OS と CPU アーキテクチャを検出する
+- 対応する SnapVM CLI リリースをダウンロードする
+- リリースのチェックサムを検証する
+- バイナリを `snapvm` としてインストールする
+
+デフォルトでは `/usr/local/bin/snapvm` にインストールされます。そのディレクトリへ書き込めない場合、スクリプトが `sudo` を使うことがあります。
+
+## 任意のディレクトリへインストールする
+
+ユーザーが書き込めるディレクトリに入れたい場合は、スクリプト実行前に `SNAPVM_INSTALL_DIR` を設定します。
+
+```text
+export SNAPVM_INSTALL_DIR="$HOME/.local/bin"
+curl -fsSL https://snapvm.dev/install.sh | sh
+```
+
+そのディレクトリが `PATH` に含まれていることを確認します。
+
+```text
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+ターミナルを開き直しても有効にしたい場合は、この `PATH` 設定をシェルのプロファイルに追加します。
+
+## インストールを確認する
+
+シェルから CLI が見えるか確認します。
+
+```text
+which snapvm
+snapvm --version
+snapvm --help
+```
+
+`snapvm` のパス、バージョン、コマンド一覧が表示されれば利用できます。
+
+## アップデートする
+
+既存の CLI をアップデートします。
+
+```text
+snapvm update
+```
+
+## ローカルディレクトリのコンテキスト
+
+`snapvm use` を使うと、現在のプロジェクトディレクトリで使うデフォルトのマシンを設定できます。
+
+```text
+snapvm use frontend-lab
+```
+
+CLI はこのローカルコンテキストを `.snapvm` ファイルに保存します。マシン選択を開発者ごとの設定にしたい場合は、`.snapvm` を `.gitignore` に追加してください。
+
+ローカルコンテキストを削除するには次を実行します。
+
+```text
+snapvm use --unset
+```
+
+## トラブルシューティング
+
+### command not found
+
+CLI のインストール先を確認します。
+
+```text
+which snapvm
+```
+
+コマンドが見つからない場合は、インストール先ディレクトリを `PATH` に追加します。デフォルトのインストール先を使う場合は次のようにします。
+
+```text
+export PATH="/usr/local/bin:$PATH"
+```
+
+### インストール中に permission denied が出る
+
+デフォルトのインストール先には管理者権限が必要な場合があります。スクリプトが `sudo` を使うことを許可するか、`SNAPVM_INSTALL_DIR` でユーザーが書き込めるディレクトリを指定してください。
+
+### 未対応のプラットフォーム
+
+インストールスクリプトは `amd64`/`x86_64` または `arm64`/`aarch64` の macOS と Linux に対応しています。利用中のプラットフォームが対応していない場合は、対応環境を使うかワークスペース管理者に相談してください。
+
+## 次のステップ
+
+- [CLI 認証](/ja/cli/authentication)
+- [CLI コマンド](/ja/cli/commands)
+- [クイックスタート](/ja/quickstart)
