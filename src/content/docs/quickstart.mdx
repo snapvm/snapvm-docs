@@ -28,7 +28,7 @@ From the machine row or detail page, open **Terminal**. The console opens an int
 
 Try a few commands:
 
-```bash
+```text
 pwd
 uname -a
 mkdir -p ~/projects/hello
@@ -42,7 +42,7 @@ If you close the browser tab, return to the machine and open the terminal again.
 
 Most deployments route a machine HTTPS URL to an HTTP port inside the machine. If your deployment uses the default application port, you can start a server like this:
 
-```bash
+```text
 cd ~/projects/hello
 python3 -m http.server 8080
 ```
@@ -59,7 +59,7 @@ Your workspace administrator may configure a different domain or default port.
 
 After installing the CLI, sign in and target the machine you created:
 
-```bash
+```text
 snapvm login
 snapvm use <machine-name>
 snapvm exec pwd

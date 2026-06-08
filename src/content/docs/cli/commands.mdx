@@ -17,7 +17,7 @@ These options can be used before a command:
 
 Example:
 
-```bash
+```text
 snapvm --org my-team --machine frontend-lab console
 ```
 
@@ -27,7 +27,7 @@ snapvm --org my-team --machine frontend-lab console
 
 Sign in through the browser:
 
-```bash
+```text
 snapvm login
 ```
 
@@ -37,7 +37,7 @@ Use `--web-url` only when your workspace administrator gives you a custom SnapVM
 
 Remove stored CLI credentials:
 
-```bash
+```text
 snapvm logout
 ```
 
@@ -47,7 +47,7 @@ snapvm logout
 
 Update the installed CLI:
 
-```bash
+```text
 snapvm update
 ```
 
@@ -57,7 +57,7 @@ snapvm update
 
 List machines:
 
-```bash
+```text
 snapvm list
 ```
 
@@ -71,7 +71,7 @@ Options:
 
 Create a machine:
 
-```bash
+```text
 snapvm create --name frontend-lab
 ```
 
@@ -85,7 +85,7 @@ Options:
 
 Example:
 
-```bash
+```text
 snapvm create --name automation-lab --package typescript --package-manager npm
 ```
 
@@ -93,7 +93,7 @@ snapvm create --name automation-lab --package typescript --package-manager npm
 
 Permanently delete a machine:
 
-```bash
+```text
 snapvm destroy frontend-lab
 ```
 
@@ -105,7 +105,7 @@ Deletion is permanent. Move important files, repositories, generated data, and l
 
 Activate a machine for the current directory:
 
-```bash
+```text
 snapvm use frontend-lab
 ```
 
@@ -113,7 +113,7 @@ After this, commands such as `snapvm exec` and `snapvm console` use that machine
 
 Remove the local context:
 
-```bash
+```text
 snapvm use --unset
 ```
 
@@ -123,14 +123,14 @@ snapvm use --unset
 
 Run a command inside the selected machine:
 
-```bash
+```text
 snapvm exec pwd
 snapvm exec --dir ~/projects/app npm test
 ```
 
 Alias:
 
-```bash
+```text
 snapvm x pwd
 ```
 
@@ -145,13 +145,13 @@ Options:
 
 Open an interactive shell in the selected machine:
 
-```bash
+```text
 snapvm console
 ```
 
 Alias:
 
-```bash
+```text
 snapvm c
 ```
 
@@ -161,7 +161,7 @@ snapvm c
 
 Create a checkpoint:
 
-```bash
+```text
 snapvm checkpoint create --comment "before dependency upgrade"
 ```
 
@@ -169,7 +169,7 @@ snapvm checkpoint create --comment "before dependency upgrade"
 
 List checkpoints:
 
-```bash
+```text
 snapvm checkpoint list
 snapvm checkpoint list --output json
 ```
@@ -178,7 +178,7 @@ snapvm checkpoint list --output json
 
 Show checkpoint details:
 
-```bash
+```text
 snapvm checkpoint info <version-id>
 ```
 
@@ -186,7 +186,7 @@ snapvm checkpoint info <version-id>
 
 Delete a checkpoint:
 
-```bash
+```text
 snapvm checkpoint delete <version-id>
 ```
 
@@ -194,7 +194,7 @@ snapvm checkpoint delete <version-id>
 
 Restore from a checkpoint:
 
-```bash
+```text
 snapvm restore <version-id>
 ```
 
@@ -204,7 +204,7 @@ Restoring changes the machine back to the selected checkpoint. Save or move any 
 
 `snapvm machines` remains available for older workflows, but new usage should prefer the top-level commands:
 
-```bash
+```text
 snapvm list
 snapvm create --name frontend-lab
 snapvm destroy frontend-lab

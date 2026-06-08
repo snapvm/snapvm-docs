@@ -9,7 +9,7 @@ Before the CLI can manage machines, sign in with your SnapVM account.
 
 Run:
 
-```bash
+```text
 snapvm login
 ```
 
@@ -21,13 +21,13 @@ If the browser does not open automatically, use the URL printed by the CLI.
 
 List the machines available to your account:
 
-```bash
+```text
 snapvm list
 ```
 
 By default, `snapvm list` shows machines owned by you in the selected organization. Organization owners and admins can use `--all` or `--user-id` when they need a broader view.
 
-```bash
+```text
 snapvm list --all
 snapvm list --user-id me
 snapvm list --output json
@@ -37,13 +37,13 @@ snapvm list --output json
 
 Use `--org` when your account has access to more than one organization:
 
-```bash
+```text
 snapvm --org my-team list
 ```
 
 You can also set the default organization for your shell session:
 
-```bash
+```text
 export SNAPVM_ORG="my-team"
 ```
 
@@ -51,13 +51,13 @@ export SNAPVM_ORG="my-team"
 
 Most machine commands accept a machine name or ID. You can also set a default machine for a command:
 
-```bash
+```text
 snapvm --machine frontend-lab console
 ```
 
 For a project directory, prefer local context:
 
-```bash
+```text
 snapvm use frontend-lab
 snapvm exec pwd
 ```
@@ -66,14 +66,14 @@ snapvm exec pwd
 
 The CLI defaults to the public SnapVM service. If your workspace administrator gives you a custom SnapVM URL, use the matching option:
 
-```bash
+```text
 snapvm login --web-url https://snapvm.example.com
 snapvm --api-url https://snapvm.example.com/api list
 ```
 
 For repeated use, set the environment variables your administrator provides:
 
-```bash
+```text
 export SNAPVM_WEB_URL="https://snapvm.example.com"
 export SNAPVM_API_URL="https://snapvm.example.com/api"
 ```
@@ -82,7 +82,7 @@ export SNAPVM_API_URL="https://snapvm.example.com/api"
 
 Remove stored CLI credentials:
 
-```bash
+```text
 snapvm logout
 ```
 
@@ -98,13 +98,13 @@ Copy the authentication URL printed in the terminal, open it in your browser, co
 
 Run:
 
-```bash
+```text
 snapvm login
 ```
 
 If the problem continues, log out and sign in again:
 
-```bash
+```text
 snapvm logout
 snapvm login
 ```

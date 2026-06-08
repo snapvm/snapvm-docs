@@ -9,7 +9,7 @@ The SnapVM CLI (`snapvm`) lets you work with machines from your local terminal. 
 
 Install the latest CLI on macOS or Linux:
 
-```bash
+```text
 curl -fsSL https://snapvm.dev/install.sh | sh
 ```
 
@@ -26,14 +26,14 @@ By default, the binary is installed to `/usr/local/bin/snapvm`. The script may a
 
 If you prefer a user-writable directory, set `SNAPVM_INSTALL_DIR` before running the script:
 
-```bash
+```text
 export SNAPVM_INSTALL_DIR="$HOME/.local/bin"
 curl -fsSL https://snapvm.dev/install.sh | sh
 ```
 
 Make sure the directory is on your `PATH`:
 
-```bash
+```text
 export PATH="$HOME/.local/bin:$PATH"
 ```
 
@@ -43,7 +43,7 @@ Add that `PATH` update to your shell profile if you want it to persist across te
 
 Confirm that your shell can find the CLI:
 
-```bash
+```text
 which snapvm
 snapvm --version
 snapvm --help
@@ -55,7 +55,7 @@ You should see a `snapvm` path, a version, and the command list.
 
 Update an existing CLI installation:
 
-```bash
+```text
 snapvm update
 ```
 
@@ -63,7 +63,7 @@ snapvm update
 
 Use `snapvm use` to make a machine the default for commands run from the current project directory:
 
-```bash
+```text
 snapvm use frontend-lab
 ```
 
@@ -71,7 +71,7 @@ The CLI stores this local context in a `.snapvm` file. Add `.snapvm` to your `.g
 
 Remove the local context when you no longer want the directory to target that machine:
 
-```bash
+```text
 snapvm use --unset
 ```
 
@@ -81,13 +81,13 @@ snapvm use --unset
 
 Check where the CLI was installed:
 
-```bash
+```text
 which snapvm
 ```
 
 If the command is not found, add the install directory to your `PATH`. For the default install location:
 
-```bash
+```text
 export PATH="/usr/local/bin:$PATH"
 ```
 

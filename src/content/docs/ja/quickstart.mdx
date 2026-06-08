@@ -28,7 +28,7 @@ description: SnapVM コンソールにサインインし、マシンを作成し
 
 いくつかコマンドを実行してみます。
 
-```bash
+```text
 pwd
 uname -a
 mkdir -p ~/projects/hello
@@ -42,7 +42,7 @@ printf 'hello from snapvm\n' > README.md
 
 多くのデプロイでは、マシンの HTTPS URL がマシン内の HTTP ポートへルーティングされます。デフォルトのアプリケーションポートを使う場合、次のようにサーバーを起動できます。
 
-```bash
+```text
 cd ~/projects/hello
 python3 -m http.server 8080
 ```
@@ -59,7 +59,7 @@ https://<machine-name>.snapvm.app
 
 CLI をインストールしたら、サインインして作成したマシンを対象にします。
 
-```bash
+```text
 snapvm login
 snapvm use <machine-name>
 snapvm exec pwd
