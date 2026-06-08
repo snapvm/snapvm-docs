@@ -1,0 +1,120 @@
+---
+title: CLI 認証
+description: CLI から SnapVM にサインインし、組織を選択してログアウトします。
+---
+
+CLI でマシンを操作する前に、SnapVM アカウントでサインインします。
+
+## サインインする
+
+次を実行します。
+
+```bash
+snapvm login
+```
+
+CLI がブラウザ認証フローを開きます。ブラウザでサインインを完了したら、ターミナルに戻ります。
+
+ブラウザが自動で開かない場合は、CLI に表示された URL を開いてください。
+
+## アクセスを確認する
+
+アカウントで利用できるマシンを一覧表示します。
+
+```bash
+snapvm list
+```
+
+デフォルトでは、選択中の組織で自分が所有するマシンが表示されます。組織のオーナーまたは管理者は、必要に応じて `--all` や `--user-id` で表示範囲を広げられます。
+
+```bash
+snapvm list --all
+snapvm list --user-id me
+snapvm list --output json
+```
+
+## 組織を選択する
+
+複数の組織にアクセスできる場合は `--org` を使います。
+
+```bash
+snapvm --org my-team list
+```
+
+シェルセッションのデフォルト組織として設定することもできます。
+
+```bash
+export SNAPVM_ORG="my-team"
+```
+
+## マシンを選択する
+
+多くのマシン操作コマンドでは、マシン名または ID を指定できます。コマンドのデフォルトマシンを指定することもできます。
+
+```bash
+snapvm --machine frontend-lab console
+```
+
+プロジェクトディレクトリでは、ローカルコンテキストを使うと便利です。
+
+```bash
+snapvm use frontend-lab
+snapvm exec pwd
+```
+
+## カスタム SnapVM URL
+
+CLI はデフォルトで公開 SnapVM サービスを使います。ワークスペース管理者から専用の SnapVM URL を案内された場合は、対応するオプションを使います。
+
+```bash
+snapvm login --web-url https://snapvm.example.com
+snapvm --api-url https://snapvm.example.com/api list
+```
+
+繰り返し使う場合は、管理者から案内された環境変数を設定します。
+
+```bash
+export SNAPVM_WEB_URL="https://snapvm.example.com"
+export SNAPVM_API_URL="https://snapvm.example.com/api"
+```
+
+## ログアウトする
+
+保存済みの CLI 認証情報を削除します。
+
+```bash
+snapvm logout
+```
+
+CLI を再接続する必要がある場合は、もう一度 `snapvm login` を実行します。
+
+## トラブルシューティング
+
+### ブラウザが開かない
+
+ターミナルに表示された認証 URL をコピーし、ブラウザで開いてサインインを完了してから CLI に戻ります。
+
+### サインイン済みとして扱われない
+
+次を実行します。
+
+```bash
+snapvm login
+```
+
+問題が続く場合は、ログアウトしてから再度サインインします。
+
+```bash
+snapvm logout
+snapvm login
+```
+
+### マシンが表示されない
+
+想定した組織を選択しているか、コンソールで自分のアカウントにマシンが表示されるか確認します。アクセスに問題がある場合は、ワークスペース管理者に相談してください。
+
+## 次のステップ
+
+- [CLI コマンド](/ja/cli/commands)
+- [CLI のインストール](/ja/cli/installation)
+- [SnapVM の使い方](/ja/working-with-snapvm)

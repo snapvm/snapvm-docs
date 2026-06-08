@@ -15,7 +15,7 @@ Common examples:
 - A local database or queue
 - A background worker
 - A file watcher
-- An AI agent process
+- An AI worker process
 - A language server or project-specific daemon
 
 ## Service shape
@@ -52,7 +52,7 @@ A service definition usually includes:
     </tr>
     <tr>
       <td>HTTP port</td>
-      <td>Port the gateway should expose, when applicable</td>
+      <td>Port SnapVM should expose, when applicable</td>
     </tr>
     <tr>
       <td>Dependencies</td>
@@ -73,4 +73,4 @@ When a machine hibernates, processes stop with the runtime. When the machine wak
 - Prefer project-local scripts such as `npm run dev` or `bin/server` over long one-off commands.
 - Store secrets in the deployment's supported secret mechanism, not in documentation or committed service definitions.
 - Use health checks or logs to verify that the service started cleanly.
-- Keep ports stable so the gateway and teammates know where to reach the app.
+- Keep ports stable so teammates know where to reach the app.

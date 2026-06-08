@@ -1,0 +1,217 @@
+---
+title: CLI コマンド
+description: よく使う SnapVM CLI コマンドとオプションのリファレンスです。
+---
+
+最新のヘルプ出力は、ターミナルで `snapvm --help` または `snapvm help <command>` を実行して確認してください。
+
+## グローバルオプション
+
+これらのオプションはコマンドの前に指定できます。
+
+| オプション | 環境変数 | 用途 |
+| --- | --- | --- |
+| `--api-url <url>` | `SNAPVM_API_URL` | 管理者から案内されたカスタム SnapVM API URL を使います。 |
+| `--org <slug>`, `-o <slug>` | `SNAPVM_ORG` | コマンドで使う組織を選択します。 |
+| `--machine <name-or-id>`, `-m <name-or-id>` | `SNAPVM_MACHINE` | コマンドで使うマシンを選択します。 |
+
+例:
+
+```bash
+snapvm --org my-team --machine frontend-lab console
+```
+
+## 認証
+
+### `snapvm login`
+
+ブラウザ経由でサインインします。
+
+```bash
+snapvm login
+```
+
+`--web-url` は、ワークスペース管理者からカスタム SnapVM Web URL を案内された場合のみ使います。
+
+### `snapvm logout`
+
+保存済みの CLI 認証情報を削除します。
+
+```bash
+snapvm logout
+```
+
+## アップデート
+
+### `snapvm update`
+
+インストール済みの CLI をアップデートします。
+
+```bash
+snapvm update
+```
+
+## マシン
+
+### `snapvm list`
+
+マシンを一覧表示します。
+
+```bash
+snapvm list
+```
+
+オプション:
+
+- `--output table|json` は出力形式を変更します。
+- `--all` は、ロールで許可されている場合に全ユーザー所有のマシンを表示します。
+- `--user-id me|all|user_xxx` は所有者で絞り込みます。
+
+### `snapvm create`
+
+マシンを作成します。
+
+```bash
+snapvm create --name frontend-lab
+```
+
+オプション:
+
+- `--name <name>` はマシン名を設定します。
+- `--launch-type sprites|external` はデプロイで提供されている起動種別を選択します。
+- `--package <npm-package>` は初期セットアップ時に npm パッケージをインストールします。複数指定する場合はフラグを繰り返します。
+- `--package-manager bun|npm` は `--package` で使うパッケージマネージャーを選びます。
+- `--output summary|json` は出力形式を変更します。
+
+例:
+
+```bash
+snapvm create --name automation-lab --package typescript --package-manager npm
+```
+
+### `snapvm destroy`
+
+マシンを完全に削除します。
+
+```bash
+snapvm destroy frontend-lab
+```
+
+削除は永続的です。マシンを削除する前に、必要なファイル、リポジトリ、生成データ、ローカルデータベースを別の場所へ移してください。
+
+## ローカルコンテキスト
+
+### `snapvm use`
+
+現在のディレクトリで使うマシンを有効化します。
+
+```bash
+snapvm use frontend-lab
+```
+
+以後、同じディレクトリで実行する `snapvm exec` や `snapvm console` はそのマシンを使います。
+
+ローカルコンテキストを削除します。
+
+```bash
+snapvm use --unset
+```
+
+## コマンド実行
+
+### `snapvm exec`
+
+選択中のマシン内でコマンドを実行します。
+
+```bash
+snapvm exec pwd
+snapvm exec --dir ~/projects/app npm test
+```
+
+エイリアス:
+
+```bash
+snapvm x pwd
+```
+
+オプション:
+
+- `--dir <path>` は作業ディレクトリを指定します。
+- `--env KEY=value` は環境変数を渡します。複数指定する場合はフラグを繰り返します。
+- `--stdin` は標準入力を転送します。
+- `--tty` は対話ターミナルを割り当てます。
+
+### `snapvm console`
+
+選択中のマシンで対話シェルを開きます。
+
+```bash
+snapvm console
+```
+
+エイリアス:
+
+```bash
+snapvm c
+```
+
+## チェックポイント
+
+### `snapvm checkpoint create`
+
+チェックポイントを作成します。
+
+```bash
+snapvm checkpoint create --comment "before dependency upgrade"
+```
+
+### `snapvm checkpoint list`
+
+チェックポイントを一覧表示します。
+
+```bash
+snapvm checkpoint list
+snapvm checkpoint list --output json
+```
+
+### `snapvm checkpoint info`
+
+チェックポイントの詳細を表示します。
+
+```bash
+snapvm checkpoint info <version-id>
+```
+
+### `snapvm checkpoint delete`
+
+チェックポイントを削除します。
+
+```bash
+snapvm checkpoint delete <version-id>
+```
+
+### `snapvm restore`
+
+チェックポイントから復元します。
+
+```bash
+snapvm restore <version-id>
+```
+
+復元すると、マシンは選択したチェックポイントの状態に戻ります。残しておきたい作業がある場合は、復元前に保存または退避してください。
+
+## 非推奨コマンド
+
+`snapvm machines` は古いワークフロー向けに残っていますが、新しい利用ではトップレベルコマンドを使ってください。
+
+```bash
+snapvm list
+snapvm create --name frontend-lab
+snapvm destroy frontend-lab
+```
+
+## 関連ドキュメント
+
+- [CLI のインストール](/ja/cli/installation)
+- [CLI 認証](/ja/cli/authentication)
+- [マシン](/ja/concepts/machines)

@@ -75,6 +75,27 @@ export default defineConfig({
             },
           ],
         },
+        {
+          label: "CLI Reference",
+          translations: { ja: "CLI リファレンス" },
+          items: [
+            {
+              label: "Installation",
+              translations: { ja: "インストール" },
+              slug: "cli/installation",
+            },
+            {
+              label: "Authentication",
+              translations: { ja: "認証" },
+              slug: "cli/authentication",
+            },
+            {
+              label: "Commands",
+              translations: { ja: "コマンド" },
+              slug: "cli/commands",
+            },
+          ],
+        },
       ],
       social: [
         {

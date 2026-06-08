@@ -3,17 +3,15 @@ title: Terminal sessions
 description: Browser terminal behavior, reconnects, multi-attach, and when to use services instead.
 ---
 
-The SnapVM terminal is a browser UI connected to a PTY exposed by the agent running inside a machine.
+The SnapVM terminal opens an interactive shell for a machine from your browser.
 
-## How connection works
+## How to use the terminal
 
-1. The browser asks the SnapVM API for authorized access to a machine.
-2. The console opens a WebSocket connection through the terminal gateway.
-3. The gateway reaches the agent inside the machine.
-4. The agent starts or attaches to a PTY session.
-5. Terminal input and output stream between the browser and the session.
-
-The terminal UI can use renderers such as xterm.js or experimental alternatives when the product exposes a switch.
+1. Open a machine in the console.
+2. Choose **Terminal**.
+3. Start a new session or attach to an existing session if the console offers that choice.
+4. Run commands as you would in a normal shell.
+5. Close the browser tab when you are done, or reopen the terminal later to continue.
 
 ## Reconnect behavior
 
@@ -69,7 +67,7 @@ The deployment may enforce a maximum session count.
       <td>Service</td>
     </tr>
     <tr>
-      <td>Starting an agent automatically</td>
+      <td>Starting an automation process automatically</td>
       <td>Service</td>
     </tr>
     <tr>

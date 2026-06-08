@@ -3,33 +3,34 @@ title: Working with SnapVM
 description: How machines, services, terminal sessions, storage, and organizations fit together.
 ---
 
-SnapVM is built around a small set of durable concepts: machines, terminal sessions, services, storage, and organizations. The web console is the primary way to operate them.
+SnapVM is built around a small set of durable concepts: machines, terminal sessions, services, storage, and organizations. The web console is the primary way to operate them, and the CLI is available for local terminal workflows.
 
 ## Typical workflow
 
 1. Choose an organization in the console.
-2. Create a machine for a project, demo, class, or agent host.
+2. Create a machine for a project, demo, class, or automation host.
 3. Open a terminal and set up the workspace.
 4. Start short-lived exploratory commands in the terminal.
 5. Define services for long-running processes.
 6. Stop or leave the machine to hibernate when idle.
 7. Reopen the machine later and continue from the persisted filesystem.
+8. Optionally install the CLI and use `snapvm use` to target the machine from your local project directory.
 
 ## Machines
 
-A machine is a named workspace backed by a runtime. It owns the state you care about: files, packages, repositories, service definitions, and gateway routing.
+A machine is a named workspace backed by a runtime. It owns the state you care about: files, packages, repositories, service definitions, and application URL settings.
 
-Machine names also become part of the application URL. Keep names short and stable, for example `api-demo`, `agent-lab`, or `frontend-review`.
+Machine names may also become part of the application URL. Keep names short and stable, for example `api-demo`, `automation-lab`, or `frontend-review`.
 
 ## Sessions
 
-Terminal sessions are interactive shells exposed by the machine agent. They are useful for development, debugging, installing tools, and inspecting logs.
+Terminal sessions are interactive shells for a machine. They are useful for development, debugging, installing tools, and inspecting logs.
 
 Sessions can survive browser disconnects, but they are still interactive work surfaces. If a process must keep running across hibernation, make it a service instead of relying on an open terminal tab.
 
 ## Services
 
-Services are durable process definitions. Use services for web servers, databases, queues, workers, language servers, or agent processes that should restart when a machine wakes.
+Services are durable process definitions. Use services for web servers, databases, queues, workers, language servers, or automation processes that should restart when a machine wakes.
 
 A service usually has:
 
@@ -48,7 +49,7 @@ In-memory state does not persist. Processes started in an interactive shell stop
 
 ## Organizations and access
 
-Machines belong to organizations. Authentication and row-level security keep organization data isolated so a user only sees machines for organizations where they have access.
+Machines belong to organizations. Users only see and operate machines in organizations where they have access.
 
 Common access tasks happen in the console:
 
@@ -74,6 +75,10 @@ Common access tasks happen in the console:
     <tr>
       <td>A browser shell for exploration</td>
       <td>Terminal session</td>
+    </tr>
+    <tr>
+      <td>Local terminal commands against a machine</td>
+      <td>CLI</td>
     </tr>
     <tr>
       <td>A long-running process</td>
